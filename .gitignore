@@ -1,0 +1,109 @@
+# Логи
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Отчеты диагностики
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Данные выполнения
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Промежуточное хранилище Grunt
+.grunt
+
+# Каталог зависимостей Bower
+bower_components
+
+# Конфигурация node-waf
+.lock-wscript
+
+# Скомпилированные двоичные дополнения
+build/Release
+
+# Каталоги зависимостей
+node_modules/
+web_modules/
+
+# Кэш TypeScript
+*.tsbuildinfo
+
+# Опциональный каталог кэша npm
+.npm
+
+# Опциональный кэш eslint
+.eslintcache
+
+# Опциональный кэш stylelint
+.stylelintcache
+
+# Кэш Microbundle
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# История REPL
+.node_repl_history
+
+# Выходные данные 'npm pack'
+*.tgz
+
+# Файлы переменных окружения dotenv
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# Кэш parcel-bundler
+.cache
+.parcel-cache
+
+# Выходные данные сборки vuepress
+.vuepress/dist
+
+# Каталог temp и кэш vuepress v2.x
+.temp
+.cache
+
+# Кэш и сгенерированные файлы Docusaurus
+.docusaurus
+
+# Каталоги Serverless
+.serverless/
+
+# Кэш FuseBox
+.fusebox/
+
+# Локальные файлы DynamoDB
+.dynamodb/
+
+# Файл порта TernJS
+.tern-port
+
+# Сохраняет версии VSCode, используемые для тестирования расширений VSCode
+.vscode-test
+
+# Дополнительно для клиента
+dist
+dist-ssr
+*.local
+
+# Директории и файлы редакторов
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
