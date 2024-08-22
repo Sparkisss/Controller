@@ -1,12 +1,26 @@
 import './App.css'
+import LoginPage from './pages/LoginPage';
+import DeviceDataPage from './pages/DeviceDataPage';
+import ArchivePage from './pages/ArchivePage';
+import SliderPage from './pages/SliderPage';
+import TaskListPage from './pages/TaskListPage';
+import HomePage from './pages/HomePage';
+import RegistrationPage from './pages/RegistrationPage';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
  
 
   return (
-    <div>
-      Igor
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegistrationPage />} />
+      <Route path="/device" element={<DeviceDataPage />} />
+      <Route path="/archive" element={<ArchivePage />} />
+      <Route path="/slider" element={<SliderPage />} />
+      <Route path="/tasks" element={<TaskListPage />} />
+    </Routes>
   )
 }
 
