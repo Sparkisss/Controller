@@ -1,4 +1,3 @@
-import './App.css'
 import LoginPage from './pages/LoginPage';
 import DeviceDataPage from './pages/DeviceDataPage';
 import ArchivePage from './pages/ArchivePage';
@@ -10,8 +9,8 @@ import { Routes, Route } from 'react-router-dom';
 import NotFound from './pages/NotFound';
 
 function App() {
-  return (
-    <Routes>
+  return (    
+    <Routes>      
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registration" element={<RegistrationPage />} />
