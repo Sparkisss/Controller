@@ -1,7 +1,7 @@
+import { FC } from 'react';
 import { Typography, Button, Flex } from 'antd';
 import {PieChartOutlined, LogoutOutlined} from '@ant-design/icons';
 import classes from './Header.module.scss';
-import { FC } from 'react';
 
 const Header: FC = () => {
     return (
