@@ -13,7 +13,6 @@ const SignUp = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then(async({user}) => {
                 const token = await user.getIdToken();
-                console.log(user);
                 dispatch(setUser({
                     email: user.email,
                     id: user.uid,
