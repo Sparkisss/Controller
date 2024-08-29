@@ -9,3 +9,28 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
+
+@media (max-width: 769px) {
+    body {
+      font-size: 12px; 
+    }
+    .ant-btn {
+        font-size: 14px;
+      }
+  }
+
+  @media (max-width: 426px) {
+    body {
+      font-size: 10px; 
+    }
+    .ant-btn {
+        font-size: 12px;
+        height: 2em;
+      }
+  }
+
+  @media (max-width: 376px) {
+    body {
+      font-size: 8px; 
+    }
+  }
