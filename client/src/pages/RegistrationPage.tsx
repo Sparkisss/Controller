@@ -7,7 +7,7 @@ const RegistrationPage = () => {
         <div>
             <h1>Register</h1>
             <SignUp/>
-            <p>
+            <p style={{fontSize:'2em'}}>
                 Already have an account <Link to={"/login"}>Sign in</Link>
             </p>
         </div>

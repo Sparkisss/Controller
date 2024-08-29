@@ -6,7 +6,7 @@ const LoginPage = () => {
         <div>
             <h1>Login</h1>
             <Login/>
-            <p>Or <Link to={'/registration'}>registred</Link></p>
+            <p style={{fontSize:'2em'}}>You don't have an account <Link to={'/registration'}>registred</Link></p>
         </div>
         
     );
