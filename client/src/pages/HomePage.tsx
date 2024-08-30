@@ -38,7 +38,7 @@ const HomePage = () => {
    
    
     return isAuth ? (
-        <div>
+        <main>
             <h1>Welcome {email}</h1>
 
             <List
@@ -64,7 +64,7 @@ const HomePage = () => {
                 icon={<LogoutOutlined />}>
                 LogOut
             </Button>
-        </div>
+        </main>
     ) : (        
         <Navigate to="/login" replace={true}/>        
     );

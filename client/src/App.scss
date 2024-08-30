@@ -3,4 +3,19 @@
     align-items: center;
     justify-content: center;
     flex: 1;
+    height: 100vh;
+    .ant-flex {
+        padding: 1em;
+        height: 70vh;
+        width: 100%;
+        .ant-layout-sider {            
+            background-color: aqua;
+            h3 {
+                text-align: center;
+            }
+        }
+        .ant-layout-content {
+            background-color: red;
+        }     
+    }  
 }
