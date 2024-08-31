@@ -1,4 +1,5 @@
 const { Server } = require('socket.io');
+const { port} = require('./serial');
 
 const setupSocket = (server) => {
     const io = new Server(server, {

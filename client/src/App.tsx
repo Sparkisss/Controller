@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { io } from "socket.io-client";
 import LoginPage from './pages/LoginPage';
 import DeviceDataPage from './pages/DeviceDataPage';
@@ -14,6 +14,12 @@ import './App.scss'
 export type CoreCommand = {
   stand: string | number
   value: string | number
+}
+
+interface SendParams {
+  mode?: any;
+  pump1?: any;
+  pump2?: any;
 }
 
 const socket = io("http://localhost:8000")
@@ -38,19 +44,23 @@ function App() {
       };
   }, []); // Убедитесь, что socket не меняется
 
-  const send = useCallback((mode: string, pump1: string, pump2: string) => {
-      const newCoreCommands = [
-          { stand: '0', value: mode },
-          { stand: '1', value: pump1 },
-          { stand: '2', value: pump2 },
-      ];
-
-      setCoreCommands(newCoreCommands);
-
-      newCoreCommands.forEach((command) => {
+  const send = ({mode, pump1, pump2}: SendParams) => {
+    // Меняем значения coreCommands
+    const newCoreCommands: CoreCommand[] = [
+      { stand: '0', value: mode ?? coreCommands[0].value },
+      { stand: '1', value: pump1 ?? coreCommands[1].value },
+      { stand: '2', value: pump2 ?? coreCommands[2].value },
+  ];
+    setCoreCommands(newCoreCommands);
+    // Отправляем команды на сервер
+    newCoreCommands.forEach((command) => {
+      try {
           socket.emit('LED_CONTROL', command);
-      });
-  }, []);
+      } catch (error) {
+          console.error('Ошибка при отправке команды:', error);
+      }
+  });       
+}
 
   return (    
     <main className='wrapper'>
@@ -58,7 +68,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
-        <Route path="/device" element={<DeviceDataPage data={serverData}/>} />
+        <Route path="/device" element={<DeviceDataPage data={serverData} send={send}/>} />
         <Route path="/archive" element={<ArchivePage />} />
         <Route path="/slider" element={<SliderPage />} />
         <Route path="/tasks" element={<TaskListPage />} />
