@@ -2,6 +2,7 @@ import { Layout } from "antd";
 import { Space, Table, Tag, Button, Flex } from 'antd';
 import type { TableProps } from 'antd';
 import { FC, useState } from "react";
+import InfoModal from "../modal/InfoModal";
 import classes from './DeviceManage.module.scss'
 import { DeviceProps } from "../../style/styles";
 
@@ -116,7 +117,7 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         },
       ];
 
-    const [isPrimary, setIsPrimary] = useState<boolean[]>([true, false]);
+    const [isPrimary, setIsPrimary] = useState<boolean[]>([true, false]);  
 
     const [mode, setMode] = useState<boolean>(true);
     const handleClickMode = (mode: boolean) => {
@@ -148,6 +149,7 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
     };
 
     return (
+      <>      
         <Content>
            <Table columns={columns} dataSource={data} pagination={{ pageSize: 4 }}/>
            <Flex wrap gap="small" className={classes.antFlex} style={{height: '5em'}}>
@@ -157,11 +159,11 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
                 <Button type={isPrimary[1] ? 'primary' : 'default'} shape="circle" onClick={() => handleClickMode(true)}>
                     M
                 </Button>
-                <Button type="primary">
-                    Description
-                </Button>
+                <InfoModal/>
             </Flex>
         </Content>
+      </>
+
     );
 };
 
