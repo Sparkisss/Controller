@@ -15,7 +15,7 @@ const options: Intl.DateTimeFormatOptions = {
 const ArchiveWindow:FC<DeviceProps> = ({data}) => {
     const [messages, setMessages] = useState<{ message: string; timestamp: string }[]>([]);
     const [num, setNum] = useState<number>(0) //состояние для отслеживания номера сообщения
-    let newData = data?.split(" ").map(String);    
+    const newData = data?.split(" ").map(String);    
     // список возможных сообщений о состоягии объекта
     const getMessage = (event: string[]): string => { 
         for (let i = 0; i < event.length; i++) {

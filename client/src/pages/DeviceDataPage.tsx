@@ -10,7 +10,7 @@ const DeviceDataPage: FC<DeviceProps> = ({data, send}) => {
             <Flex>                          
                 <Layout>
                     <ArchiveWindow data={data}/>
-                    <DeviceManage send={send}/>
+                    <DeviceManage send={send} data={data}/>
                 </Layout>               
             </Flex>
         </>

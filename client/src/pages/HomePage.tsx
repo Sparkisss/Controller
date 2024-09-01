@@ -36,7 +36,6 @@ const HomePage = () => {
         },
       ];
    
-   
     return isAuth ? (
         <main>
             <h1>Welcome {email}</h1>

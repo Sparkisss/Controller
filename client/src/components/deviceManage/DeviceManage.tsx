@@ -1,27 +1,20 @@
 import { Layout } from "antd";
-import { Space, Table, Tag, Button, Flex } from 'antd';
+import { Space, Table, Tag, Button, Flex, Popover } from 'antd';
 import type { TableProps } from 'antd';
-import { FC, useState } from "react";
+import { MailOutlined } from '@ant-design/icons';
+import { FC, useEffect, useState } from "react";
 import InfoModal from "../modal/InfoModal";
 import classes from './DeviceManage.module.scss'
 import { DeviceProps } from "../../style/styles";
-
+import { DataType } from "../../style/styles";
 const { Content } = Layout;
 
-interface DataType {
-    key: string;
-    name: string;
-    type: string;
-    tags: string[];
-  }
-
-const DeviceManage:FC<DeviceProps> = ({send}) => {
+const DeviceManage:FC<DeviceProps> = ({send, data}) => {
     const columns: TableProps<DataType>['columns'] = [
         {
           title: 'Equipment name',
           dataIndex: 'name',
           key: 'name',
-          render: (text) => <a>{text}</a>,
         },
         {
           title: 'Type',
@@ -42,7 +35,7 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
                 if (tag === 'service') {
                     color = 'yellow'
                 }
-                return (
+                return (                
                   <Tag color={color} key={tag}>
                     {tag.toUpperCase()}
                   </Tag>
@@ -78,48 +71,59 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         }        
       ];
       
-      const data: DataType[] = [
-        {
-          key: '1',
-          name: 'Wilo-33/12',
-          type: 'main pump',
+    const TableData: DataType[] = [
+      {
+        key: '1',
+        name: 'Wilo-33/12',
+        type: 'main pump',
+        tags: ['ok'],
+      },
+      {
+        key: '2',
+        name: 'Wilo-33/12',
+        type: 'backup pump',
+        tags: ['broken', 'repairs'],
+      },
+      {
+        key: '3',
+        name: 'RELETEK RS-LC3',
+        type: 'liquid sensor',
+        tags: ['service', '10.10.24'],
+      },
+      {
+          key: '4',
+          name: 'EKM 100 VM',
+          type: 'dry run. sensor',
           tags: ['ok'],
-        },
-        {
-          key: '2',
-          name: 'Wilo-33/12',
-          type: 'backup pump',
-          tags: ['broken', 'repairs'],
-        },
-        {
-          key: '3',
-          name: 'RELETEK RS-LC3',
-          type: 'liquid sensor',
-          tags: ['service', '10.10.24'],
-        },
-        {
-            key: '4',
-            name: 'EKM 100 VM',
-            type: 'dry run. sensor',
-            tags: ['ok'],
-        },
-        {
-            key: '5',
-            name: 'EKM 100 VM',
-            type: 'dry run. sensor',
-            tags: ['ok'],
-        },
-        {
-            key: '6',
-            name: 'EKM 100 VM',
-            type: 'dry run. sensor',
-            tags: ['ok'],
-        },
-      ];
+      },
+      {
+          key: '5',
+          name: 'EKM 100 VM',
+          type: 'dry run. sensor',
+          tags: ['ok'],
+      },
+      {
+          key: '6',
+          name: 'EKM 100 VM',
+          type: 'dry run. sensor',
+          tags: ['ok'],
+      },
+    ];
+
+    const stateInfo = (
+      <div>
+        <p>Green - OK</p>
+        <p>Yellow - Attention</p>
+        <p>Red -Error</p>
+      </div>
+      
+    )
 
     const [isPrimary, setIsPrimary] = useState<boolean[]>([true, false]);  
-
     const [mode, setMode] = useState<boolean>(true);
+    const [pumps, setPumps] = useState({ pump1: false, pump2: false });
+    const [color, setColor] = useState('red');
+
     const handleClickMode = (mode: boolean) => {
         if (mode) {
             send?.({mode: '1'});
@@ -132,8 +136,6 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         }
     }
     
-    const [pumps, setPumps] = useState({ pump1: false, pump2: false });
-
     const handleClickPump = (pump: string) => {
         if (pump === '1') {
             const newState = !pumps.pump1; // Переключаем состояние насоса 1
@@ -148,10 +150,23 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         }
     };
 
+    useEffect(() => {
+      const newData = data?.split(" ").map(String); 
+      if(newData?.[7] === '1') setColor('green');
+      else if(newData?.[8] === '1') setColor('yellow');
+      else if(newData?.[9] === '1') setColor('red');
+      
+    }, [data])
+
     return (
       <>      
         <Content>
-           <Table columns={columns} dataSource={data} pagination={{ pageSize: 4 }}/>
+          <h2 style={{textAlign: 'center'}}>Brest, Kirova, 122
+            <Popover content={stateInfo} title='State info:'>
+              <MailOutlined style={{color: color, marginLeft:'1em', cursor: 'pointer'}}/>
+            </Popover>
+          </h2>
+           <Table columns={columns} dataSource={TableData} pagination={{ pageSize: 4 }}/>
            <Flex wrap gap="small" className={classes.antFlex} style={{height: '5em'}}>
                 <Button type={isPrimary[0] ? 'primary' : 'default'} shape="circle" onClick={() => handleClickMode(false)}>
                     A
@@ -163,7 +178,6 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
             </Flex>
         </Content>
       </>
-
     );
 };
 

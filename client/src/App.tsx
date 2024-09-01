@@ -8,21 +8,11 @@ import TaskListPage from './pages/TaskListPage';
 import HomePage from './pages/HomePage';
 import RegistrationPage from './pages/RegistrationPage';
 import { Routes, Route } from 'react-router-dom';
+import { CoreCommand, SendParams } from './style/styles';
 import NotFound from './pages/NotFound';
 import './App.scss'
 
-export type CoreCommand = {
-  stand: string | number
-  value: string | number
-}
-
-interface SendParams {
-  mode?: any;
-  pump1?: any;
-  pump2?: any;
-}
-
-const socket = io("http://localhost:8000")
+const socket = io(import.meta.env.VITE_SERVER_PORT)
 
 function App() {
   const [serverData, setServerData] = useState<string>('');
@@ -57,7 +47,7 @@ function App() {
       try {
           socket.emit('LED_CONTROL', command);
       } catch (error) {
-          console.error('Ошибка при отправке команды:', error);
+          console.error('Error sending command:', error);
       }
   });       
 }

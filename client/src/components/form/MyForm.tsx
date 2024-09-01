@@ -1,11 +1,7 @@
 import { FC, useState} from 'react';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input} from 'antd';
-
-interface FormData {
-    title: string;
-    handleClick: (email:string, pass: string) => void;
-}
+import { FormData } from '../../style/styles';
 
 const MyForm: FC<FormData> = ({title, handleClick}) => {
     const [email, setEmail] = useState('');
