@@ -53,28 +53,41 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         {
           title: 'Action',
           key: 'action',
-          render: (_, record) => (
-            record.type === 'pump' ? 
-                <Space size="middle">          
-                    <Button disabled={mode} onClick={() => handleClickPump(record.key)}>{3}</Button>
+          render: (_, record) => {
+            if (record.type === 'main pump') {
+              return (
+                <Space size="middle">
+                  <Button disabled={mode} onClick={() => handleClickPump(record.key)}>
+                    {pumps.pump1 ? 'on' : 'off'}
+                  </Button>
                 </Space>
-                :
-                null        
-          ),
-        },
+              );
+            } else if (record.type === 'backup pump') {
+              return (
+                <Space size="middle">
+                  <Button disabled={mode} onClick={() => handleClickPump(record.key)}>
+                    {pumps.pump2 ? 'on' : 'off'}
+                  </Button>
+                </Space>
+              );
+            } else {
+              return null;
+            }
+          },
+        }        
       ];
       
       const data: DataType[] = [
         {
           key: '1',
           name: 'Wilo-33/12',
-          type: 'pump',
+          type: 'main pump',
           tags: ['ok'],
         },
         {
           key: '2',
           name: 'Wilo-33/12',
-          type: 'pump',
+          type: 'backup pump',
           tags: ['broken', 'repairs'],
         },
         {
@@ -103,14 +116,18 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         },
       ];
 
+    const [isPrimary, setIsPrimary] = useState<boolean[]>([true, false]);
+
     const [mode, setMode] = useState<boolean>(true);
     const handleClickMode = (mode: boolean) => {
         if (mode) {
             send?.({mode: '1'});
             setMode(false)
+            setIsPrimary([false, true]);
         } else {
             send?.({mode: '0'});
-            setMode(true)
+            setMode(true)            
+            setIsPrimary([true, false]);  
         }
     }
     
@@ -120,7 +137,7 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         if (pump === '1') {
             const newState = !pumps.pump1; // Переключаем состояние насоса 1
             setPumps((prev) => ({ ...prev, pump1: newState }));
-            send?.({ pump1: newState ? '1' : '0' }); // Отправляем состояние
+            send?.({ pump1: newState ? '1' : '0' }); // Отправляем состояние                
         } else if (pump === '2') {
             const newState = !pumps.pump2; // Переключаем состояние насоса 2
             setPumps((prev) => ({ ...prev, pump2: newState }));
@@ -134,10 +151,10 @@ const DeviceManage:FC<DeviceProps> = ({send}) => {
         <Content>
            <Table columns={columns} dataSource={data} pagination={{ pageSize: 4 }}/>
            <Flex wrap gap="small" className={classes.antFlex} style={{height: '5em'}}>
-                <Button type="primary" shape="circle" onClick={() => handleClickMode(false)}>
+                <Button type={isPrimary[0] ? 'primary' : 'default'} shape="circle" onClick={() => handleClickMode(false)}>
                     A
                 </Button>
-                <Button shape="circle" onClick={() => handleClickMode(true)}>
+                <Button type={isPrimary[1] ? 'primary' : 'default'} shape="circle" onClick={() => handleClickMode(true)}>
                     M
                 </Button>
                 <Button type="primary">
