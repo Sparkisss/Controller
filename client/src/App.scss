@@ -4,6 +4,10 @@
     justify-content: center;
     flex: 1;
     height: 100vh;
+    .ant-list {
+        min-width: 100%;
+        text-align: center;
+    }
     .ant-flex {
         padding: 1em;
         height: 70vh;
