@@ -1,0 +1,27 @@
+.slider {
+    margin: 1em 0;
+    img {
+        border-radius: 10px;
+    }    
+    .btnLeft,
+    .btnRight {
+        position: absolute;
+        transform: translateY(-50%);
+    }
+    .btnLeft {
+        left: 0;
+        top: 50%;
+        margin-left: 1em;
+    }
+    .btnRight {
+        right: 0%;
+        top: 50%;
+        margin-right: 1em;
+    }
+    .navigate {
+        position: absolute;
+        bottom: 7.5em;
+        left: 50%;
+        translate: -50%;        
+    }
+}
