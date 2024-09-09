@@ -25,6 +25,20 @@ const ArchiveWindow:FC<DeviceProps> = ({data}) => {
         }
         return ''       
     };
+    // метод для записи данных в базу данных
+    // const createArchiveMessage = async () => {
+    //     try {
+    //         const response = await fetch('http://localhost:8000/archive', {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({})
+    //         });
+    //     } catch (error) {
+            
+    //     }
+    // }
     // отслеживаем изменения сщстояния объекта и выводим дату изменения, сообщение о характере изменения,
     // порядковый номер изменения
     useEffect(() => {

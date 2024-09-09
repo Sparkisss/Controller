@@ -1,43 +1,41 @@
-import { Avatar, List } from 'antd';
-import { FC } from 'react';
+import { List } from 'antd';
+import { FC, useEffect, useState } from 'react';
+
+type ArchiveData = {
+    number: number;
+    status: string;
+    date: string;
+    time: string;
+}
 
 const ArchivePage: FC = () => {
-    const data = [
-        {
-            number: 1,
-            status: 'OK',
-            date: '07/09/2024',
-            time: '19:10',
-        },
-        {
-            number: 2,
-            status: 'OK',
-            date: '08/09/2024',
-            time: '19:55',
-        },
-        {
-            number: 3,
-            status: 'Attention',
-            date: '09/09/2024',
-            time: '11:10',
-        },
-        {
-            number: 4,
-            status: 'Error',
-            date: '17/09/2024',
-            time: '09:10',
-        },
-    ];
+    const [data, setData] = useState<ArchiveData[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:8000/archive');
+                if (!response.ok) {
+                    throw new Error ('Network response was not ok');
+                }
+                const archiveMessage = await response.json();
+                setData(archiveMessage);
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <List
             pagination={{align: 'end'}}
             itemLayout="horizontal"
             dataSource={data}
-            renderItem={(item) => (
+            renderItem={(item: ArchiveData) => (
                 <List.Item>
                     <List.Item.Meta                       
-                        title={item.number + ' ' + item.status + ' ' +  item.date + ' ' + item.time}
+                        title={item.number + '. ' + item.status + ' ' +  item.date + ' ' + item.time}
                     />
                 </List.Item>
             )}
