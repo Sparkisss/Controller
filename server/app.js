@@ -28,8 +28,8 @@ app.get('/archive', async (req, res) => {
 
 app.post('/archive', async(req, res) => {
   try {
-    const {number, status, date, time} = req.body
-    const post = await Archive.create({number, status, date, time});
+    const {number, status, date} = req.body
+    const post = await Archive.create({number, status, date});
     res.json(post);
   } catch (error) {
     res.status(500).json(error);

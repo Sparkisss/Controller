@@ -25,3 +25,9 @@ export interface DataType {
     type: string;
     tags: string[];
 }
+
+export interface ArchiveData {
+  number: number;
+  status: string;
+  date: string;
+}
