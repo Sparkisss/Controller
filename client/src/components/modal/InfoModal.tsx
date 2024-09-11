@@ -13,9 +13,8 @@ const InfoModal:FC = () => {
         title="Abbilites description" 
         open={isModalOpen} onOk={() => setIsModalOpen(false)} 
         onCancel={() => setIsModalOpen(false)}>
-        <p>You can see a status message on right part of your screen. There are 4 possible states: 1.OK; 2.Attention; 3.Error; 4.In progress</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>You can see a status message on right part of your screen.
+           There are 4 possible states: 1.OK; 2.Attention; 3.Error; 4.In progress</p>
       </Modal>
     </>
     )

@@ -14,7 +14,7 @@
 #define INDICATE_SENSOR_LEVEL3 6
 #define SENSOR_LEVEL4 A3
 #define INDICATE_SENSOR_LEVEL4 7
-#define interval 4000
+#define interval 3000
 #define period 100
 // таймер периода опроса прибора
 unsigned long timer;
@@ -29,21 +29,46 @@ int mode = 0;
 int pumpOne = 0;
 int pumpTwo = 0;
 
+const int inputPins[] = {
+  GUARD_SENSOR, 
+  SENSOR_LEVEL2, 
+  SENSOR_LEVEL3, 
+  SENSOR_LEVEL4
+  };
+const int outputPins[] = {
+  WORK_OK, 
+  WORK_WARNING, 
+  WORK_ERROR, 
+  PUMP_ONE, 
+  PUMP_TWO, 
+  INDICATE_GUARD_SENSOR, 
+  INDICATE_SENSOR_LEVEL1, 
+  INDICATE_SENSOR_LEVEL2, 
+  INDICATE_SENSOR_LEVEL3, 
+  INDICATE_SENSOR_LEVEL4
+  };
+const int sensorPins[] = {
+    INDICATE_SENSOR_LEVEL1,
+    INDICATE_SENSOR_LEVEL2,
+    INDICATE_SENSOR_LEVEL3,
+    INDICATE_SENSOR_LEVEL4,
+    INDICATE_GUARD_SENSOR,
+    PUMP_ONE,
+    PUMP_TWO,
+    WORK_OK,
+    WORK_WARNING,
+    WORK_ERROR
+};
+
+int lastStates[sizeof(sensorPins) / sizeof(sensorPins[0])] = {-1}; // Инициализация массива
+
 void setup() {
-  pinMode(GUARD_SENSOR, INPUT_PULLUP);
-  pinMode(SENSOR_LEVEL2, INPUT_PULLUP);
-  pinMode(SENSOR_LEVEL3, INPUT_PULLUP);
-  pinMode(SENSOR_LEVEL4, INPUT_PULLUP);
-  pinMode(WORK_OK, OUTPUT);
-  pinMode(WORK_WARNING, OUTPUT);
-  pinMode(WORK_ERROR, OUTPUT);
-  pinMode(PUMP_ONE, OUTPUT);
-  pinMode(PUMP_TWO, OUTPUT);
-  pinMode(INDICATE_GUARD_SENSOR, OUTPUT);
-  pinMode(INDICATE_SENSOR_LEVEL1, OUTPUT); 
-  pinMode(INDICATE_SENSOR_LEVEL2, OUTPUT);
-  pinMode(INDICATE_SENSOR_LEVEL3, OUTPUT);
-  pinMode(INDICATE_SENSOR_LEVEL4, OUTPUT);
+  for (int i = 0; i < sizeof(inputPins) / sizeof(inputPins[0]); i++) {
+    pinMode(inputPins[i], INPUT_PULLUP);
+  }  
+  for (int i = 0; i < sizeof(outputPins) / sizeof(outputPins[0]); i++) {
+    pinMode(outputPins[i], OUTPUT);
+  }  
   Serial.begin(9600);
   Serial.setTimeout(1000);
 }
@@ -58,7 +83,7 @@ void loop() {
   }
   if (millis() - timer > interval) {
     work (indicate, mode, pumpOne, pumpTwo); 
-    serSerial();
+    setSerial();
     timer = millis();
   }
   parsing();    
@@ -137,17 +162,20 @@ void parsing() {
   }
 }
 //отправка данных в сериал порт
-void serSerial() {
-  Serial.print(digitalRead(INDICATE_SENSOR_LEVEL1)); Serial.print(' ');
-  Serial.print(digitalRead(INDICATE_SENSOR_LEVEL2)); Serial.print(' ');
-  Serial.print(digitalRead(INDICATE_SENSOR_LEVEL3)); Serial.print(' ');
-  Serial.print(digitalRead(INDICATE_SENSOR_LEVEL4)); Serial.print(' ');
-  Serial.print(digitalRead(INDICATE_GUARD_SENSOR)); Serial.print(' ');
-  Serial.print(digitalRead(PUMP_ONE)); Serial.print(' ');
-  Serial.print(digitalRead(PUMP_TWO)); Serial.print(' ');
-  Serial.print(digitalRead(WORK_OK)); Serial.print(' ');
-  Serial.print(digitalRead(WORK_WARNING)); Serial.print(' ');
-  Serial.print(digitalRead(WORK_ERROR)); Serial.print(" \n");
+void setSerial() {
+    bool changed = false; // Установить флаг изменения
+    String dataToSend = "";
+    for (int i = 0; i < sizeof(sensorPins) / sizeof(sensorPins[0]); i++) {
+        int currentState = digitalRead(sensorPins[i]);
+        if (currentState != lastStates[i]) {
+            changed = true; 
+            lastStates[i] = currentState; // Обновление предыдущего состояния
+        }
+        dataToSend += String(currentState) + " "; 
+    }
+    if (changed) {
+        Serial.println(dataToSend);
+    }
 }
 
 

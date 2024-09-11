@@ -9,7 +9,7 @@ const IMAGES = [slide1, slide2, slide3, slide4, slide5];
 
 const SliderPage = () => {
     return (        
-            <Slider imagesUrls={IMAGES}/>
+        <Slider imagesUrls={IMAGES}/>
     );
 };
 

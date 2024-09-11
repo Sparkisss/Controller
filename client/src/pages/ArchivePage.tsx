@@ -1,26 +1,18 @@
 import { List } from 'antd';
 import { FC, useEffect, useState } from 'react';
 import { ArchiveData } from '../style/styles';
+import { fetchData } from '../API/api';
 
 const ArchivePage: FC<any> = () => {
     const [archiveMessage, setArchiveMessage] = useState<ArchiveData[]>([]);
 
-    const fetchData = async () => {
-        try {
-            const response = await fetch('http://localhost:8000/archive');
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setArchiveMessage(data);
-        } catch (error) {
-            console.error('Error fetching tasks:', error);
-        }
-    };
-
     useEffect(() => {
-        fetchData();
-    }, [archiveMessage]);
+        const getData = async() => {
+            const data = await fetchData();
+            setArchiveMessage(data);
+        };
+        getData();
+    }, []);
 
     return (
         <List

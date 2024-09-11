@@ -8,7 +8,6 @@ const LoginPage = () => {
             <Login/>
             <p style={{fontSize:'2em'}}>You don't have an account <Link to={'/registration'}>registred</Link></p>
         </div>
-        
     );
 };
 

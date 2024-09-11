@@ -1,16 +1,7 @@
 import { Layout } from "antd";
 import { FC } from "react";
+import { ArchiveWindowProps} from "../../style/styles";
 const { Sider } = Layout;
-
-interface Message {
-    message: string;
-    date: string;
-}
-
-interface ArchiveWindowProps {
-    num: number;
-    messages: Message[];
-}
 
 const ArchiveWindow: FC<ArchiveWindowProps> = ({ num, messages }) => {
     return (

@@ -1,13 +1,10 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import { Button } from 'antd';
 import{ CaretLeftOutlined, CaretRightOutlined, BorderOutlined, CheckOutlined} from '@ant-design/icons';
 import classes from './Slider.module.scss'
+import { ImageSliderProps } from '../../style/styles';
 
-type ImageSliderProps = {
-    imagesUrls: string[];
-}
-
-const Slider = ({imagesUrls}: ImageSliderProps) => {
+const Slider: FC<ImageSliderProps> = ({imagesUrls}) => {
     const [imageIndex, setImageIndex] = useState(0);
 
     const showNextImage = () => {

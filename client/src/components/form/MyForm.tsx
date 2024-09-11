@@ -27,7 +27,6 @@ const MyForm: FC<FormData> = ({title, handleClick}) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}/>
         </Form.Item>
-
         <Form.Item
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}

@@ -5,8 +5,7 @@ import { MailOutlined } from '@ant-design/icons';
 import { FC, useEffect, useState } from "react";
 import InfoModal from "../modal/InfoModal";
 import classes from './DeviceManage.module.scss'
-import { DeviceProps } from "../../style/styles";
-import { DataType } from "../../style/styles";
+import { DeviceProps, DataType } from "../../style/styles";
 const { Content } = Layout;
 
 const DeviceManage:FC<DeviceProps> = ({send, data}) => {
@@ -115,14 +114,13 @@ const DeviceManage:FC<DeviceProps> = ({send, data}) => {
         <p>Green - OK</p>
         <p>Yellow - Attention</p>
         <p>Red -Error</p>
-      </div>
-      
+      </div>      
     )
 
     const [isPrimary, setIsPrimary] = useState<boolean[]>([true, false]);  
     const [mode, setMode] = useState<boolean>(true);
     const [pumps, setPumps] = useState({ pump1: false, pump2: false });
-    const [color, setColor] = useState('red');
+    const [color, setColor] = useState('green');
 
     const handleClickMode = (mode: boolean) => {
         if (mode) {
@@ -135,7 +133,7 @@ const DeviceManage:FC<DeviceProps> = ({send, data}) => {
             setIsPrimary([true, false]);  
         }
     }
-    
+  
     const handleClickPump = (pump: string) => {
         if (pump === '1') {
             const newState = !pumps.pump1; // Переключаем состояние насоса 1
@@ -145,18 +143,15 @@ const DeviceManage:FC<DeviceProps> = ({send, data}) => {
             const newState = !pumps.pump2; // Переключаем состояние насоса 2
             setPumps((prev) => ({ ...prev, pump2: newState }));
             send?.({ pump2: newState ? '2' : '0' }); // Отправляем состояние
-        } else {
-            console.log('Error button');
-        }
+        } 
     };
 
     useEffect(() => {
-      const newData = data?.split(" ").map(String); 
-      if(newData?.[7] === '1') setColor('green');
-      else if(newData?.[8] === '1') setColor('yellow');
-      else if(newData?.[9] === '1') setColor('red');
-      
-    }, [data])
+      const newData = data?.split(" ");
+      if (newData) {
+          setColor(newData[7] === '1' ? 'green' : newData[8] === '1' ? 'yellow' : newData[9] === '1' ? 'red' : color);
+      }
+  }, [data]);
 
     return (
       <>      

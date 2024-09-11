@@ -8,10 +8,12 @@ import TaskListPage from './pages/TaskListPage';
 import HomePage from './pages/HomePage';
 import RegistrationPage from './pages/RegistrationPage';
 import { Routes, Route } from 'react-router-dom';
-import { CoreCommand, SendParams, ArchiveData } from './style/styles';
+import { createData } from './API/api';
+import { CoreCommand, SendParams, Message } from './style/styles';
 import NotFound from './pages/NotFound';
 import './App.scss'
 import debounce from 'lodash/debounce';
+import { useSocketData } from './hooks/useSocketData';
 
 const socket = io(import.meta.env.VITE_SERVER_PORT)
 
@@ -25,24 +27,13 @@ const options: Intl.DateTimeFormatOptions = {
 };
 
 function App() {
-  const [serverData, setServerData] = useState<string>('');
   const [coreCommands, setCoreCommands] = useState<CoreCommand[]>([
       { stand: '0', value: '0' }, // режим
       { stand: '1', value: '0' }, // насос 1
       { stand: '2', value: '0' }, // насос 2
   ]);
 
-  useEffect(() => {
-      const handleData = (data: string) => {
-          setServerData(data);
-      };
-
-      socket.on('data', handleData);
-
-      return () => {
-          socket.off('data', handleData);
-      };
-  }, []); // Убедитесь, что socket не меняется
+  const serverData = useSocketData();
 
   const send = ({mode, pump1, pump2}: SendParams) => {
     // Меняем значения coreCommands
@@ -61,8 +52,8 @@ function App() {
       }
   });       
 }
-  //////////////////
-const [messages, setMessages] = useState<{ message: string; date: string }[]>([]);
+
+const [messages, setMessages] = useState<Message[]>([]);
 const [num, setNum] = useState<number>(0) //состояние для отслеживания номера сообщения
 const newData = serverData?.split(" ").map(String);    
 // список возможных сообщений о состоягии объекта
@@ -74,28 +65,8 @@ const getMessage = (event: string[]): string => {
     }
     return 'Load'       
 };
-// метод для записи данных в базу данных
-const createArchiveMessage = async ({number, status, date}: ArchiveData) => {
-  try {
-      const response = await fetch('http://localhost:8000/archive', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({number, status, date})                
-      });
-      if (!response.ok) {
-          throw new Error(`Ошибка: ${response.statusText}`);
-      }
-      const data = await response.json();
-      console.log('Create: ', data);
-  } catch (error) {
-      console.log("Error with create data", error);
-  }
-}
-  // отслеживаем изменения сщстояния объекта и выводим дату изменения, сообщение о характере изменения,
-  // порядковый номер изменения
-  const debouncedCreateArchiveMessage = debounce(createArchiveMessage, 300);
+  // отслеживаем изменения сщстояния объекта и выводим дату изменения, сообщение о характере изменения
+  const debouncedCreateArchiveMessage = debounce(createData, 300);
 
   useEffect(() => {
     const date = new Date().toLocaleString('en-GB', options);
@@ -116,7 +87,6 @@ const createArchiveMessage = async ({number, status, date}: ArchiveData) => {
         }
     });
 }, [serverData]);
-  ////////////////
 
   return (    
     <main className='wrapper'>
@@ -131,7 +101,6 @@ const createArchiveMessage = async ({number, status, date}: ArchiveData) => {
         <Route path="*" element={<NotFound />} />
       </Routes>
     </main>
-
   )
 }
 
