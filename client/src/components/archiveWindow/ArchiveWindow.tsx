@@ -1,9 +1,11 @@
 import { Layout } from "antd";
 import { FC } from "react";
-import { ArchiveWindowProps} from "../../style/styles";
+import { useGetMessage } from "../../hooks/useGetMessage";
+import { DeviceProps} from "../../style/styles";
 const { Sider } = Layout;
 
-const ArchiveWindow: FC<ArchiveWindowProps> = ({ num, messages }) => {
+const ArchiveWindow: FC<DeviceProps> = ({data}) => {
+    const {messages, num} = useGetMessage(data);
     return (
         <Sider>
             <h3>Event archive:</h3>

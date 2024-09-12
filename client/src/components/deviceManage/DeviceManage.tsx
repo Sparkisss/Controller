@@ -4,11 +4,12 @@ import type { TableProps } from 'antd';
 import { MailOutlined } from '@ant-design/icons';
 import { FC, useEffect, useState } from "react";
 import InfoModal from "../modal/InfoModal";
+import { useCoreCommands } from "../../hooks/useCoreCommands";
 import classes from './DeviceManage.module.scss'
 import { DeviceProps, DataType } from "../../style/styles";
 const { Content } = Layout;
 
-const DeviceManage:FC<DeviceProps> = ({send, data}) => {
+const DeviceManage:FC<DeviceProps> = ({data}) => {
     const columns: TableProps<DataType>['columns'] = [
         {
           title: 'Equipment name',
@@ -121,9 +122,10 @@ const DeviceManage:FC<DeviceProps> = ({send, data}) => {
     const [mode, setMode] = useState<boolean>(true);
     const [pumps, setPumps] = useState({ pump1: false, pump2: false });
     const [color, setColor] = useState('green');
+    const {send} = useCoreCommands();
 
     const handleClickMode = (mode: boolean) => {
-        if (mode) {
+        if (mode) {            
             send?.({mode: '1'});
             setMode(false)
             setIsPrimary([false, true]);

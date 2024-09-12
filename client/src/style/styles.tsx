@@ -1,6 +1,5 @@
 export interface DeviceProps {
-    data?: string;
-    send?: any;
+    data: string;
 }
 
 export type CoreCommand = {

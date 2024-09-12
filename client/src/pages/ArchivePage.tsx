@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 import { ArchiveData } from '../style/styles';
 import { fetchData } from '../API/api';
 
-const ArchivePage: FC<any> = () => {
+const ArchivePage: FC = () => {
     const [archiveMessage, setArchiveMessage] = useState<ArchiveData[]>([]);
 
     useEffect(() => {

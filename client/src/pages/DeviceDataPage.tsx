@@ -2,14 +2,15 @@ import { FC} from "react";
 import { Flex, Layout} from 'antd';
 import ArchiveWindow from "../components/archiveWindow/ArchiveWindow";
 import DeviceManage from "../components/deviceManage/DeviceManage";
+import { DeviceProps } from "../style/styles";
 
-const DeviceDataPage: FC<any> = ({num, messages, data, send}) => {
+const DeviceDataPage: FC<DeviceProps> = ({ data }) => {
     return (
         <>
             <Flex>                          
                 <Layout>
-                    <ArchiveWindow num={num} messages={messages}/>
-                    <DeviceManage send={send} data={data}/>
+                    <ArchiveWindow data={data}/>
+                    <DeviceManage data={data}/>
                 </Layout>               
             </Flex>
         </>
